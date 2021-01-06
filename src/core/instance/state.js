@@ -109,6 +109,10 @@ const computedSharedDefinition = {
   get: noop,
   set: noop
 }
+/**
+ * 拿到用户定义的computed属性，遍历，拿到每个属性get和set 走makeComputedGetter函数
+ * 
+ */
 
 function initComputed (vm: Component, computed: Object) {
   for (const key in computed) {
@@ -129,7 +133,12 @@ function initComputed (vm: Component, computed: Object) {
     Object.defineProperty(vm, key, computedSharedDefinition)
   }
 }
-
+/**
+ * 
+ * @param {*} getter 
+ * @param {*} owner 
+ * makeComputedGetter函数中 每个computed属性实例化一个watcher，
+ */
 function makeComputedGetter (getter: Function, owner: Component): Function {
   const watcher = new Watcher(owner, getter, noop, {
     lazy: true

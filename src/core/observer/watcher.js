@@ -18,6 +18,12 @@ let uid = 0
  * and fires callback when the expression value changes.
  * This is used for both the $watch() api and directives.
  */
+
+/**
+ * 这里的options指的就是computedWatcherOptions，当我们走initData的逻辑的时候，options并不存在，所以this.lazy = false，
+ * 但当我们有了computedWatcherOptions后，this.lazy = true。同时，后面还有这样一段代码：this.dirty = this.lazy，
+ * dirty的值也为true了。
+ */
 export default class Watcher {
   vm: Component;
   expression: string;
@@ -83,6 +89,11 @@ export default class Watcher {
       ? undefined
       : this.get()
   }
+  /**
+   * 上面这段代码我们可以知道，当lazy为false时，
+   * 返回的是undefined而不是this.get()方法。
+   * 也就是说，并不会执行computed中的两个方法：
+   */
 
   /**
    * Evaluate the getter, and re-collect dependencies.

@@ -2428,7 +2428,8 @@ function initLifecycle (vm) {
 
 function lifecycleMixin (Vue) {
   /**
-   * 
+   * mount是创建虚拟dom节点
+   * update是构造真实dom节点
    * 
    * 
    * _mount函数用来挂载组件   
@@ -2616,7 +2617,6 @@ function callHook (vm, hook) {
   }
 }
 
-/*  */
 
 var hooks = { init: init, prepatch: prepatch, insert: insert, destroy: destroy$1 };
 var hooksToMerge = Object.keys(hooks);
@@ -2648,8 +2648,7 @@ function createComponent (
   if (!Ctor.cid) {
     if (Ctor.resolved) {
       Ctor = Ctor.resolved;
-    } else {
-      Ctor = resolveAsyncComponent(Ctor, baseCtor, function () {
+    } else { omponent(Ctor, baseCtor, function () {
         // it's ok to queue this on every render because
         // $forceUpdate is buffered by the scheduler.
         context.$forceUpdate();

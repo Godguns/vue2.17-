@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-11-05 15:06:19
+ * @LastEditTime: 2021-01-06 11:49:54
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-2.1.7\src\entries\web-runtime-with-compiler.js
+ */
 /* @flow */
 
 import Vue from './web-runtime'
@@ -28,6 +36,24 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+
+  /**
+   * 如果render函数不存在，使用模板和el元素编译
+   * 
+   * 
+   * 如果 template 选项不存在，那么使用 el 元素的 outerHTML 作为模板内容
+      如果 template 选项存在：
+      且 template 的类型是字符串
+      如果第一个字符是 #，那么会把该字符串作为 css 选择符去选中对应的元素，并把该元素的 innerHTML 作为模板
+      如果第一个字符不是 #，那么什么都不做，就用 template 自身的字符串值作为模板
+      且 template 的类型是元素节点(template.nodeType 存在)
+      则使用该元素的 innerHTML 作为模板
+      若 template 既不是字符串又不是元素节点，那么在非生产环境会提示开发者传递的 template 选项无效
+   * 
+   * 
+   * 
+   * 
+   */
   if (!options.render) {
     let template = options.template
     if (template) {

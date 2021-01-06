@@ -2427,6 +2427,14 @@ function initLifecycle (vm) {
 }
 
 function lifecycleMixin (Vue) {
+  /**
+   * 
+   * 
+   * 
+   * _mount函数用来挂载组件   
+   * 判断render函数存在不，不存在就会创建一个空节点
+   * 然后触发 callHook 触发beforemount钩子
+   */
   Vue.prototype._mount = function (
     el,
     hydrating

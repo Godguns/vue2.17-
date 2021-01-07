@@ -236,6 +236,7 @@ export function stateMixin (Vue: Class<Component>) {
     }
     /**
      * 返回的是一个函数unwatchFn,这个函数的执行会解除当前观察者对属性的观察
+     * console.log(e.target)//触发事件的元素，current是绑定的元素
      */
   }
 }

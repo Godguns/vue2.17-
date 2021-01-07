@@ -115,8 +115,9 @@ const computedSharedDefinition = {
  */
 
 function initComputed (vm: Component, computed: Object) {
+  // 遍历 computed 选项对象
   for (const key in computed) {
-    const userDef = computed[key]
+    const userDef = computed[key] //它的值是计算属性对象中相应的属性值
     if (typeof userDef === 'function') {
       computedSharedDefinition.get = makeComputedGetter(userDef, vm)
       computedSharedDefinition.set = noop
@@ -141,11 +142,11 @@ function initComputed (vm: Component, computed: Object) {
  */
 function makeComputedGetter (getter: Function, owner: Component): Function {
   const watcher = new Watcher(owner, getter, noop, {
-    lazy: true
+    lazy: true// 计算属性惰性求值特性
   })
   return function computedGetter () {
     if (watcher.dirty) {
-      watcher.evaluate()
+      watcher.evaluate()//触发get属性，将dirty设置为false
     }
     if (Dep.target) {
       watcher.depend()
@@ -214,14 +215,18 @@ export function stateMixin (Vue: Class<Component>) {
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
 
+
+
+//原型方法$watch方法
+
   Vue.prototype.$watch = function (
-    expOrFn: string | Function,
-    cb: Function,
-    options?: Object
+    expOrFn: string | Function,//需要侦听的属性
+    cb: Function,//需要执行的回调函数
+    options?: Object//watch 可选参数（immediate 或 deep。）
   ): Function {
-    const vm: Component = this
+    const vm: Component = this//定义当前组件的实例
     options = options || {}
-    options.user = true
+    options.user = true// 表该观察者实例是用户创建的
     const watcher = new Watcher(vm, expOrFn, cb, options)
     if (options.immediate) {
       cb.call(vm, watcher.value)
@@ -229,6 +234,9 @@ export function stateMixin (Vue: Class<Component>) {
     return function unwatchFn () {
       watcher.teardown()
     }
+    /**
+     * 返回的是一个函数unwatchFn,这个函数的执行会解除当前观察者对属性的观察
+     */
   }
 }
 

@@ -80,26 +80,40 @@ function flushSchedulerQueue () {
  * Push a watcher into the watcher queue.
  * Jobs with duplicate IDs will be skipped unless it's
  * pushed when the queue is being flushed.
+ * 这里是用来遍历存入更新队列的依赖的方法，vue会异步的，批量的更新&通知观察者修改变化，以此方式最大限量的提升性能
  */
 export function queueWatcher (watcher: Watcher) {
-  const id = watcher.id
+  const id = watcher.id//每一个watcher的唯一值
   if (has[id] == null) {
     has[id] = true
     if (!flushing) {
-      queue.push(watcher)
+      queue.push(watcher)//待更新数组
     } else {
-      // if already flushing, splice the watcher based on its id
-      // if already past its id, it will be run next immediately.
+     /**
+      * 
+      * flushing 变量是一个标志，我们知道放入队列 queue 中的所有观察者将会在突变完成之后统一执行更新，当更新开始时会将 
+      * flushing 变量的值设置为 true，代表着此时正在执行更新，所以根据判断条件 if (!flushing) 
+      * 可知只有当队列没有执行更新时才会简单地将观察者追加到队列的尾部，
+      * 但是还有典型的例子就是计算属性
+      * 
+      * 如果只是当队列没有执行更新时才会简单地将观察者追加到队列的尾部
+      * 队列执行更新时经常会执行渲染函数观察者的更新，渲染函数中很可能有计算属性的存在，由于计算属性在实现方式上与普通响应式属性有所不同，
+      * 所以当触发计算属性的 get 拦截器函数时会有观察者入队的行为，这个时候我们需要特殊处理，也就是 else 分支的代码
+      */
       let i = queue.length - 1
       while (i >= 0 && queue[i].id > watcher.id) {
         i--
       }
       queue.splice(Math.max(i, index) + 1, 0, watcher)
+      /**
+       * 这段代码的作用是为了保证观察者的执行顺序，现在我们只需要知道观察者会被放入 queue 队列中即可，我们后面会详细讨论。
+       */
     }
     // queue the flush
     if (!waiting) {
       waiting = true
-      nextTick(flushSchedulerQueue)
+      nextTick(flushSchedulerQueue)//这里开始对更新队列中的熟悉进行更新，$nextTick 方法是在 renderMixin 函数中挂载到 Vue 原型上的
     }
+    //变量 waiting 同样是一个标志，它也定义在 scheduler.js 文件头部，初始值为 false
   }
 }

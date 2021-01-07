@@ -225,10 +225,12 @@ export default class Watcher {
    */
   teardown () {
     if (this.active) {
-      // remove self from vm's watcher list
-      // this is a somewhat expensive operation so we skip it
-      // if the vm is being destroyed or is performing a v-for
-      // re-render (the watcher list is then filtered by v-for).
+   /**
+    * 首先检查active属性，果为假则说明该观察者已经不处于激活状态，什么都不需要做，如果为真则会执行 if 语句块内的代码，
+    * 每个组件实例都有一个 vm._isBeingDestroyed 属性，它是一个标识，为真说明该组件实例已经被销毁了，为假说明该组件还没有被销毁，所以以上代码的意思是如果组件没有被销毁，
+    * 那么将当前观察者实例从组件实例对象的 vm._watchers 数组中移除，我们知道 vm._watchers 数组中包含了该组件所有的观察者实例对象，
+    * 所以将当前观察者实例对象从 vm._watchers 数组中移除是解除属性与观察者实例对象之间关系的第一步。由于这个参数的性能开销比较大，所以仅在组件没有被销毁的情况下才会执行此操作。
+    */
       if (!this.vm._isBeingDestroyed && !this.vm._vForRemoving) {
         remove(this.vm._watchers, this)
       }

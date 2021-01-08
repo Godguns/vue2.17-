@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-05 15:06:19
- * @LastEditTime: 2021-01-06 11:49:54
+ * @LastEditTime: 2021-01-08 13:30:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-2.1.7\src\entries\web-runtime-with-compiler.js
@@ -95,6 +95,7 @@ Vue.prototype.$mount = function (
 /**
  * Get outerHTML of elements, taking care
  * of SVG elements in IE as well.
+ * 挂载节点
  */
 function getOuterHTML (el: Element): string {
   if (el.outerHTML) {

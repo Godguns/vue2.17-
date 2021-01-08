@@ -8,8 +8,7 @@
  *
 
 /*
- * Not type-checking this because this file is perf-critical and the cost
- * of making flow understand it is not worth it.
+ * patch的具体实现
  */
 
 import config from '../config'
@@ -407,14 +406,19 @@ export function createPatchFunction (backend) {
     }
   }
 
+  /***
+   *  这是执行真正更新dom的方法，大概的执行逻辑如下:
+   *  判断vnode和oldVnode是否相等
+      判断是否能重用vnode
+      判断是否执行回调
+      判断是否有children需要diff更新
+      判断执行更新类型—新增dom、移除dom、更新textDom
+   */
   function patchVnode (oldVnode, vnode, insertedVnodeQueue, removeOnly) {
-    if (oldVnode === vnode) {
+    if (oldVnode === vnode) {               //-------------------------------------------->>>>>>>>>>>>>>>//判断Vnode和oldVnode是否相等
       return
     }
-    // reuse element for static trees.
-    // note we only do this if the vnode is cloned -
-    // if the new node is not cloned it means the render functions have been
-    // reset by the hot-reload-api and we need to do a proper re-render.
+
     if (vnode.isStatic &&
         oldVnode.isStatic &&
         vnode.key === oldVnode.key &&

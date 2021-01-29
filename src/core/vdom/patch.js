@@ -18,7 +18,7 @@ import { activeInstance } from '../instance/lifecycle'
 import { registerRef } from './modules/ref'
 
 export const emptyNode = new VNode('', {}, [])
-
+//执行一些关于钩子函数的方法
 const hooks = ['create', 'activate', 'update', 'remove', 'destroy']
 
 function isUndef (s) {
@@ -28,7 +28,7 @@ function isUndef (s) {
 function isDef (s) {
   return s != null
 }
-
+//判断是否为相同vnode节点（主要是通过key和标签名称来判断 的）
 function sameVnode (vnode1, vnode2) {
   return (
     vnode1.key === vnode2.key &&
@@ -74,7 +74,7 @@ export function createPatchFunction (backend) {
     remove.listeners = listeners
     return remove
   }
-
+//移除节点的方法
   function removeNode (el) {
     const parent = nodeOps.parentNode(el)
     // element may have already been removed due to v-html / v-text
@@ -84,6 +84,7 @@ export function createPatchFunction (backend) {
   }
 
   let inPre = 0
+  //创建节点的方法
   function createElm (vnode, insertedVnodeQueue, parentElm, refElm, nested) {
     vnode.isRootInsert = !nested // for transition enter check
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
@@ -155,7 +156,7 @@ export function createPatchFunction (backend) {
       insert(parentElm, vnode.elm, refElm)
     }
   }
-
+  //创建组件的方法
   function createComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
     let i = vnode.data
     if (isDef(i)) {

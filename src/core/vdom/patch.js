@@ -8,7 +8,7 @@
  *
 
 /*
- * patch的具体实现
+ * patch的具体实现过程
  */
 
 import config from '../config'

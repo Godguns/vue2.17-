@@ -424,7 +424,9 @@ export function createPatchFunction (backend) {
         oldVnode.isStatic &&
         vnode.key === oldVnode.key &&
         (vnode.isCloned || vnode.isOnce)) {
+      //获取vnode的节点元素
       vnode.elm = oldVnode.elm
+      //
       vnode.child = oldVnode.child
       return
     }
@@ -441,6 +443,7 @@ export function createPatchFunction (backend) {
       for (i = 0; i < cbs.update.length; ++i) cbs.update[i](oldVnode, vnode)
       if (isDef(i = data.hook) && isDef(i = i.update)) i(oldVnode, vnode)
     }
+    //如果不是文本节点
     if (isUndef(vnode.text)) {
       if (isDef(oldCh) && isDef(ch)) {
         if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
@@ -452,6 +455,7 @@ export function createPatchFunction (backend) {
       } else if (isDef(oldVnode.text)) {
         nodeOps.setTextContent(elm, '')
       }
+      //如果老节点的文本不等于新节点的文本，就进行替换
     } else if (oldVnode.text !== vnode.text) {
       nodeOps.setTextContent(elm, vnode.text)
     }
